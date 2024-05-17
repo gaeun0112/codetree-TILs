@@ -8,7 +8,7 @@ public class Main {
             System.out.print("Superior");
         }
         else if (a=='A'){
-            System.out.print("Exellent");
+            System.out.print("Excellent");
         }
         else if (a=='B'){
             System.out.print("Good");
