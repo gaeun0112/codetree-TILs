@@ -8,7 +8,7 @@ public class Main {
             System.out.print("High");
         }
         else if (num>=0.5){
-            System.out.print("Midde");
+            System.out.print("Middle");
         }
         else{
             System.out.print("Low");
