@@ -30,43 +30,39 @@ def draw(r, c, grid):
     return grid
 
 for robot in robot_list:
-    cur_r, cur_c, cur_way = 0, robot[0], robot[1]
-    while (cur_r<(R+1)):
+    cur_r, cur_c, cur_way = 1, robot[0]-1, robot[1]
+    forest = draw(cur_r, cur_c, forest)
+    while True:
         down_r, down_c = cur_r+1, cur_c
-        if down_r < (R+1): 
-            if forest[down_r][down_c+1]==0 and forest[down_r][down_c-1]==0 and forest[down_r+1][down_c]==0:
-                # 현재 위치 우선 지우고
-                forest = erase(cur_r, cur_c, forest)
-                cur_r, cur_c = down_r, down_c
-                forest = draw(cur_r, cur_c, forest)
-                forest = check_exit(cur_r, cur_c, cur_way, forest)
+        left_r, left_c = cur_r+1, cur_c-1
+        right_r, right_c = cur_r+1, cur_c+1
+        if down_r < (grid_r-1) and (0<down_c<(C-1)) and forest[down_r][down_c+1]==0 and forest[down_r][down_c-1]==0 and forest[down_r+1][down_c]==0: 
+            # 현재 위치 우선 지우고
+            forest = erase(cur_r, cur_c, forest)
+            cur_r, cur_c = down_r, down_c
+            forest = draw(cur_r, cur_c, forest)
+            forest = check_exit(cur_r, cur_c, cur_way, forest)
+        elif (right_r<(grid_r-1)) and (0<right_c<(C-1)) and forest[right_r][right_c+1]==0 and forest[right_r+1][right_c]==0:
+            forest = erase(cur_r, cur_c, forest)
+            cur_r, cur_c = right_r, right_c
+            if cur_way==0:
+                cur_way = 3
             else:
-                right_r, right_c = cur_r+1, cur_c-1
-                if right_r<(R+1) and (0<right_c<(C-1)):
-                    if forest[right_r][right_c-1]==0 and forest[right_r+1][right_c]==0:
-                        forest = erase(cur_r, cur_c, forest)
-                        cur_r, cur_c = right_r, right_c
-                        if cur_way==0:
-                            cur_way = 3
-                        else:
-                            cur_way-=1
-                        forest = draw(cur_r, cur_c, forest)
-                        forest = check_exit(cur_r, cur_c, cur_way, forest)
-                    else:
-                        left_r, left_c = cur_r+1, cur_c+1
-                        if left_r<(R+1) and (0<left_c<(C-1)):
-                            if forest[left_r+1][left_c]==0 and forest[left_r][left_c+1]==0:
-                                forest = erase(cur_r, cur_c, forest)
-                                cur_r, cur_c = left_r, left_c
-                                if cur_way == 2:
-                                    cur_way=0
-                                else:
-                                    cur_way+=1
-                                forest = draw(cur_r, cur_c, forest)
-                                forest = check_exit(cur_r, cur_c, cur_way, forest)
-                            else:
-                                # 어디로도 갈 수 없으면 이동 종료
-                                break
+                cur_way-=1
+            forest = draw(cur_r, cur_c, forest)
+            forest = check_exit(cur_r, cur_c, cur_way, forest)
+        elif (left_r<(grid_r-1)) and (0<left_c<(C-1)) and forest[left_r+1][left_c]==0 and forest[left_r][left_c-1]==0:
+            forest = erase(cur_r, cur_c, forest)
+            cur_r, cur_c = left_r, left_c
+            if cur_way == 2:
+                cur_way=0
+            else:
+                cur_way+=1
+            forest = draw(cur_r, cur_c, forest)
+            forest = check_exit(cur_r, cur_c, cur_way, forest)
+        else:
+            # 어디로도 갈 수 없으면 이동 종료
+            break
     
     # 이동을 모두 종료했는데, 삐져나온 부분이 있으면 초기화
     if cur_r<4:
