@@ -48,15 +48,6 @@ for robot in robot_list:
             cur_r, cur_c = down_r, down_c
             forest = draw(cur_r, cur_c, forest, area)
             forest = check_exit(cur_r, cur_c, cur_way, forest, door)
-        elif (right_r<(grid_r-1)) and (0<right_c<(C-1)) and forest[right_r][right_c+1]==0 and forest[right_r+1][right_c]==0 and forest[cur_r][cur_c+2]==0 and forest[cur_r-1][cur_c+1]==0 and forest[cur_r+1][cur_c+1]==0:
-            forest = erase(cur_r, cur_c, forest)
-            cur_r, cur_c = right_r, right_c
-            if cur_way==3:
-                cur_way = 0
-            else:
-                cur_way+=1
-            forest = draw(cur_r, cur_c, forest, area)
-            forest = check_exit(cur_r, cur_c, cur_way, forest, door)
         elif (left_r<(grid_r-1)) and (0<left_c<(C-1)) and forest[left_r+1][left_c]==0 and forest[left_r][left_c-1]==0 and forest[cur_r][cur_c-2]==0 and forest[cur_r-1][cur_c-1]==0 and forest[cur_r+1][cur_c-1]==0:
             forest = erase(cur_r, cur_c, forest)
             cur_r, cur_c = left_r, left_c
@@ -64,6 +55,15 @@ for robot in robot_list:
                 cur_way=3
             else:
                 cur_way-=1
+            forest = draw(cur_r, cur_c, forest, area)
+            forest = check_exit(cur_r, cur_c, cur_way, forest, door)
+        elif (right_r<(grid_r-1)) and (0<right_c<(C-1)) and forest[right_r][right_c+1]==0 and forest[right_r+1][right_c]==0 and forest[cur_r][cur_c+2]==0 and forest[cur_r-1][cur_c+1]==0 and forest[cur_r+1][cur_c+1]==0:
+            forest = erase(cur_r, cur_c, forest)
+            cur_r, cur_c = right_r, right_c
+            if cur_way==3:
+                cur_way = 0
+            else:
+                cur_way+=1
             forest = draw(cur_r, cur_c, forest, area)
             forest = check_exit(cur_r, cur_c, cur_way, forest, door)
         else:
