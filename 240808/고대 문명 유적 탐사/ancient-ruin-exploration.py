@@ -79,7 +79,7 @@ def search_value(grid_map):
     return output_value, pos_list
 
 
-answer = ""
+answer_list = []
 for i in range(k):
     value_sum = 0
     # 1차 탐색 진행
@@ -114,7 +114,6 @@ for i in range(k):
                             max_center = center          
             
     # 초기에 주어지는 유적지에서는 탐사 진행 이전에 유물이 발견되지 않으며, 첫 번째 턴에서 탐사를 진행한 이후에는 항상 유물이 발견됨을 가정해도 좋습니다.
-    value_sum += max_first_value
     grid = rotate(grid, max_angle, max_center)
     # 유물 찾고 없애기
     # 연쇄적 탐사
@@ -126,7 +125,7 @@ for i in range(k):
             # 유적의 벽면에 적혀있는 순서대로 새로운 조각 만들기
             # 열 번호가 작은 순으로, 열 번호가 같다면 큰 순으로
             # [0] 요소 내림차순, [1] 요소 오름차순
-            prod_list.sort(key=lambda x:(-x[0], x[1]))
+            prod_list.sort(key=lambda x:(x[1], -x[0]))
             for prod in prod_list:
                 new_prod = additional_list.pop(0)
                 grid[prod[0]][prod[1]] = new_prod
@@ -134,6 +133,11 @@ for i in range(k):
         # 제거할 수 있는 유물 없으면, 중단
         else:
             break
-    answer += " " + str(value_sum)
+    answer_list.append(value_sum)
+
+answer = ""
+for a in answer_list:
+    if a!=0:
+        answer += " " + str(a)
 
 print(answer.strip())
