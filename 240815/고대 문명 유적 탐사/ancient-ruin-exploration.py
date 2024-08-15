@@ -12,45 +12,46 @@ center_list = [(3,3), (2,3), (1,3), (3,2), (2,2), (1,2), (3,1), (2,1), (1,1)]
 
 change_list = [(0,1), (0,-1), (1,0), (-1,0)]
 
-def rotate(grid_map, angle, center_pos):
-    output_grid_map = []
+def rotate_90(grid_map, center_pos):
     r, c = center_pos[0], center_pos[1]
+    output_grid_map = []
     for x in grid_map:
         temp = []
         for y in x:
             temp.append(y)
         output_grid_map.append(temp)
 
+    output_grid_map[r-1][c+1] = grid_map[r-1][c-1]
+    output_grid_map[r][c+1] = grid_map[r-1][c]
+    output_grid_map[r+1][c+1] = grid_map[r-1][c+1]
+    output_grid_map[r+1][c] = grid_map[r][c+1]
+    output_grid_map[r+1][c-1] = grid_map[r+1][c+1]
+    output_grid_map[r][c-1] = grid_map[r+1][c]
+    output_grid_map[r-1][c-1] = grid_map[r+1][c-1]
+    output_grid_map[r-1][c] = grid_map[r][c-1]
+    
+    return output_grid_map
+
+def rotate(grid_map, angle, center_pos):
+
     if angle == 90:
-        output_grid_map[r-1][c+1] = grid_map[r-1][c-1]
-        output_grid_map[r][c+1] = grid_map[r-1][c]
-        output_grid_map[r+1][c+1] = grid_map[r-1][c+1]
-        output_grid_map[r+1][c] = grid_map[r][c+1]
-        output_grid_map[r+1][c-1] = grid_map[r+1][c+1]
-        output_grid_map[r][c-1] = grid_map[r+1][c]
-        output_grid_map[r-1][c-1] = grid_map[r+1][c-1]
-        output_grid_map[r-1][c] = grid_map[r][c-1]
+        output = rotate_90(grid_map, center_pos)
 
     elif angle == 180:
-        for change in [-1,0,1]:
-            output_grid_map[r+1][c+change] = grid_map[r-1][c+change]
-            output_grid_map[r-1][c+change] = grid_map[r+1][c+change]
+        temp_output = rotate_90(grid_map, center_pos)
+        output = rotate_90(temp_output, center_pos)
     
     elif angle == 270:
-        output_grid_map[r-1][c-1] = grid_map[r-1][c+1]
-        output_grid_map[r-1][c] = grid_map[r][c+1]
-        output_grid_map[r-1][c+1] = grid_map[r+1][c+1]
-        output_grid_map[r][c+1] = grid_map[r+1][c]
-        output_grid_map[r+1][c+1] = grid_map[r+1][c-1]
-        output_grid_map[r+1][c] = grid_map[r][c-1]
-        output_grid_map[r+1][c-1] = grid_map[r-1][c-1]
-        output_grid_map[r][c-1] = grid_map[r-1][c]
+        temp_output = rotate_90(grid_map, center_pos)
+        temp_output_2 = rotate_90(temp_output, center_pos)
+        output = rotate_90(temp_output_2, center_pos)
 
-    return output_grid_map # 회전 후 그리드 맵
+    return output
 
 def search_value(grid_map):
     pos_list = []
     output_value = 0
+    all_visited = [[False]*5 for i in range(5)]
 
     for i in range(5):
         for j in range(5):
@@ -67,7 +68,7 @@ def search_value(grid_map):
                         next_r, next_c = cur_r+change[0], cur_c+change[1]
                         # 조건1 : 좌표 범위를 벗어나지 않고, 조건2 : 다음 칸이 기존 숫자와 같은 경우, 조건3 : visited=False인 경우
                         if ((0<=next_r<5) and (0<=next_c<5)):
-                            if (grid_map[next_r][next_c]==grid_map[cur_r][cur_c]) and visited[next_r][next_c]==False:
+                            if (grid_map[next_r][next_c]==grid_map[cur_r][cur_c]) and visited[next_r][next_c]==False and all_visited[next_r][next_c]==False:
                                 visited[next_r][next_c] = True
                                 queue.append((next_r, next_c))
                                 temp_pos.append([next_r,next_c])
@@ -75,6 +76,8 @@ def search_value(grid_map):
                 if temp_value >= 3:
                     pos_list.extend(temp_pos)
                     output_value += temp_value
+                    for temp in temp_pos:
+                        all_visited[temp[0]][temp[1]] = True
 
     return output_value, pos_list
 
@@ -112,7 +115,8 @@ for i in range(k):
                             max_first_value = first_value
                             max_angle = ang
                             max_center = center          
-            
+    if max_first_value==0:
+        break
     # 초기에 주어지는 유적지에서는 탐사 진행 이전에 유물이 발견되지 않으며, 첫 번째 턴에서 탐사를 진행한 이후에는 항상 유물이 발견됨을 가정해도 좋습니다.
     grid = rotate(grid, max_angle, max_center)
     # 유물 찾고 없애기
