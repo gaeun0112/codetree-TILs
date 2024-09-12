@@ -98,7 +98,7 @@ def move_knights(knight_num, direction, grid, knight_dic):
         can_move = True
         for temp in must_empty_list:
             # 다음 이동 칸 범위에 벽이 있다면, 이동할 수 없는 것이므로 while문 break
-            if temp[0]<0 or temp[0]>=L or temp[1]<0 or temp[1]>L:
+            if temp[0]<0 or temp[0]>=L or temp[1]<0 or temp[1]>=L:
                 check_wall=False
                 break
             elif grid[temp[0]][temp[1]][0]==2:
