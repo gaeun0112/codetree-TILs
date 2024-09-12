@@ -108,13 +108,14 @@ def move_knights(knight_num, direction, grid, knight_dic):
             for temp in must_empty_list:
                 # 다음 칸들 중에 이미 기사가 있는 칸이 있고, 아직 탐색하지 않은 칸이라면 
                 if grid[temp[0]][temp[1]][1]>0 and visited[temp[0]][temp[1]]==False:
-                    can_move = False 
-                    # 다음 연쇄이동 진행해야 한다.
-                    cur_knight = grid[temp[0]][temp[1]][1]
-                    cur_r, cur_c = knight_dic[cur_knight][0][0], knight_dic[cur_knight][0][1]
-                    visited[temp[0]][temp[1]] = True
-                    q.append([cur_r, cur_c, cur_knight])
-                    move_knights_list.append(cur_knight)
+                    if grid[temp[0]][temp[1]][1] not in move_knights_list:
+                        can_move = False 
+                        # 다음 연쇄이동 진행해야 한다.
+                        cur_knight = grid[temp[0]][temp[1]][1]
+                        cur_r, cur_c = knight_dic[cur_knight][0][0], knight_dic[cur_knight][0][1]
+                        visited[temp[0]][temp[1]] = True
+                        q.append([cur_r, cur_c, cur_knight])
+                        move_knights_list.append(cur_knight)
 
     if check_wall==True:
         for idx, kn in enumerate(move_knights_list):
