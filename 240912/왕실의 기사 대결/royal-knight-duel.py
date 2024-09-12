@@ -41,7 +41,7 @@ for i in range(Q):
     q_list.append([i,d])
 
 # 방향 미리 설정 : 위오아왼
-direction_dic = {0: [1,0], 1:[0,1], 2:[-1,0], 3:[0,-1]}
+direction_dic = {0: [-1,0], 1:[0,1], 2:[1,0], 3:[0,-1]}
 
 # 다음에 비어있어야 하는 영역 알려주는 함수
 def next_check(r,c,h,w,dir):
@@ -160,9 +160,9 @@ for q in q_list:
 
 answer = 0
 
-for i in range(1, N+1):
-    if knight_dic[i][2]>0:
-        temp = first_knight_dic[i][2] - knight_dic[i][2]
+for idx in range(1, N+1):
+    if knight_dic[idx][2]>0:
+        temp = first_knight_dic[idx][2] - knight_dic[idx][2]
         answer+=temp
 
 print(answer)
