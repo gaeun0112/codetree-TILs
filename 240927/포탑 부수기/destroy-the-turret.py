@@ -286,14 +286,13 @@ for x in range(K):
 
     # 1. 공격자 선정
     attacker = decide_attacker()
-    grid[attacker[0]][attacker[1]]+=(N+M)
-
 
     # 2. 공격자의 공격
 
     # 2-1. 공격되는 포탑 선정
     attacked_rook = decide_attacked_rook(attacker)
 
+    grid[attacker[0]][attacker[1]]+=(N+M)
     time[attacker[0]][attacker[1]] = x+1
 
     # 2-2. 레이저 공격
@@ -302,6 +301,12 @@ for x in range(K):
     if can_raser==False:
         # 2-3. 포탄 공격 
         influenced_rook_list = bomb_attack(attacked_rook)
+
+    for t in range(0, len(influenced_rook_list)-1):
+        i, j = influenced_rook_list[t]
+        if [i,j]==attacker:
+            influenced_rook_list.pop(t)
+
 
     # 3. 공격을 받아 공격력이 0 이하가 된 포탑은 부서진다.
     damage_1 = grid[attacker[0]][attacker[1]]
