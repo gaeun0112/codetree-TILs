@@ -161,7 +161,7 @@ for t in range(1, 61):
             if check_moving_human[h]==True:
                 x, y = get_grid(h, shop_map)
                 if human_dic[h] == [x,y]:
-                    cango_list.append([x,y])
+                    cango_map[x][y] = False
                     # 추가로, 편의점에 도착한 사람은 더이상 움직이면 안됨 
                     check_moving_human[h] = False
 
