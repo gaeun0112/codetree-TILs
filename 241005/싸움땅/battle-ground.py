@@ -132,8 +132,9 @@ for turn in range(k):
                         next_loser_r, next_loser_c = check_r, check_c
                         break   
 
-            next_loser_g = man_dic[loser][3]
-            next_winner_g = man_dic[winner][3]            
+            next_loser_g = man_dic[loser][4]
+            next_winner_g = man_dic[winner][4]     
+
             # 이동하려는 칸에 총이 있다면
             if len(gun_map[next_loser_r][next_loser_c])>0:
                 next_loser_g = get_gun(next_loser_r, next_loser_c, man_dic[loser][4])
