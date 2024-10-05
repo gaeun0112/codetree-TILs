@@ -24,6 +24,7 @@ for i in range(m):
 
 direction_dic = {0:[-1,0], 1:[0,1], 2:[1,0], 3:[0,-1]}
 inverse_direction = {0:2, 1:3, 2:0, 3:1}
+angle_direction = {0:1, 1:2, 2:3, 3:0}
 
 def calculate_minus(x,y):
     if x>y:
@@ -121,11 +122,12 @@ for turn in range(k):
             man_dic[loser][4] = 0
             # 해당 플레이어가 원래 가지고 있던 방향 확인
             loser_d = man_dic[loser][2]
+            temp_d = loser_d
             next_loser_r, next_loser_c = next_r + direction_dic[loser_d][0], next_c + direction_dic[loser_d][1]
 
             if check_direction(next_loser_r, next_loser_c)==False:
                 for i in range(3):
-                    temp_d = loser_d + 1
+                    temp_d = angle_direction[temp_d]
                     check_r, check_c = next_r+direction_dic[temp_d][0], next_c+direction_dic[temp_d][1]
                     if check_direction(check_r, check_c)==True:
                         loser_d = temp_d
