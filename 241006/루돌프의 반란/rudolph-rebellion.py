@@ -30,10 +30,10 @@ four_direction = [[-1,0], [0,1], [1,0], [0,-1]]
 def get_distance(r1, c1, r2, c2):
     return int((r1-r2)**2 + (c1-c2)**2)
 
-def bump(score, santa_df, direction, time, from_who, s_dic):
-    s_dic[santa_df][4]+=score
+def bump(score, santa_df, direction, time, from_who):
+    santa_dic[santa_df][4]+=score
 
-    s_r, s_c = s_dic[santa_df][0], s_dic[santa_df][1]
+    s_r, s_c = santa_dic[santa_df][0], santa_dic[santa_df][1]
 
     inverse_direction = [direction[0]*(-1), direction[1]*(-1)]
 
@@ -45,34 +45,33 @@ def bump(score, santa_df, direction, time, from_who, s_dic):
     next_r, next_c = s_r+(real_direction[0]*score), s_c+(real_direction[1]*score)
 
     if next_r<0 or next_r>=n or next_c<0 or next_c>=n:
-        s_dic[santa_df][2] = 3
+        santa_dic[santa_df][2] = 3
     else:
         if grid_map[next_r][next_c]==0:
             grid_map[next_r][next_c] = santa_df
-            s_dic[santa_df] = [next_r, next_c, 2, time, s_dic[santa_df][4]]
+            santa_dic[santa_df] = [next_r, next_c, 2, time, santa_dic[santa_df][4]]
             debugging = 0
         elif grid_map[next_r][next_c]>0:
-            s_dic[santa_df][2], s_dic[santa_df][3] = 2, time
+            santa_dic[santa_df][2], santa_dic[santa_df][3] = 2, time
             # 상호작용
             previous_santa = grid_map[next_r][next_c]
             new_santa = santa_df
             while True:
-                grid_map[s_dic[previous_santa][0]][s_dic[previous_santa][1]] = new_santa
-                s_dic[new_santa][0], s_dic[new_santa][1] = s_dic[previous_santa][0], s_dic[previous_santa][1]
-                next_r, next_c = s_dic[previous_santa][0] + real_direction[0], s_dic[previous_santa][1] + real_direction[1]
+                grid_map[santa_dic[previous_santa][0]][santa_dic[previous_santa][1]] = new_santa
+                santa_dic[new_santa][0], santa_dic[new_santa][1] = santa_dic[previous_santa][0], santa_dic[previous_santa][1]
+                next_r, next_c = santa_dic[previous_santa][0] + real_direction[0], santa_dic[previous_santa][1] + real_direction[1]
 
                 if next_r<0 or next_r>=n or next_c<0 or next_c>=n:
-                    s_dic[previous_santa] = [0,0,3,-1, s_dic[previous_santa][4]]
+                    santa_dic[previous_santa] = [0,0,3,-1, santa_dic[previous_santa][4]]
                     break
                 else:
                     if grid_map[next_r][next_c]==0:
                         grid_map[next_r][next_c] = previous_santa
-                        s_dic[previous_santa][0], s_dic[previous_santa][1] = next_r, next_c
+                        santa_dic[previous_santa][0], santa_dic[previous_santa][1] = next_r, next_c
                         break
                     else:
                         new_santa = previous_santa
                         previous_santa = grid_map[next_r][next_c]
-    return s_dic
 
 for turn in range(m):
     # 기절한 산타들 일어날 시점이면 처리해줘야 함
@@ -138,7 +137,7 @@ for turn in range(m):
         r_r, r_c = nearest_grid[0], nearest_grid[1]
         grid_map[r_r][r_c] = -1
         # 루돌프->산타 충돌
-        santa_dic = bump(c, nearest_santa, nearest_direction, turn, "rdf", santa_dic)
+        bump(c, nearest_santa, nearest_direction, turn, "rdf")
     else:
         grid_map[r_r][r_c] = 0
         r_r, r_c = nearest_grid[0], nearest_grid[1]
@@ -176,7 +175,7 @@ for turn in range(m):
             santa_dic[santa][0], santa_dic[santa][1] = nearest_grid[0], nearest_grid[1]
             if grid_map[nearest_grid[0]][nearest_grid[1]]==-1:
                 # 산타->루돌프 충돌 
-                santa_dic = bump(d, santa, nearest_direction, turn, "santa", santa_dic)
+                bump(d, santa, nearest_direction, turn, "santa")
             else:
                 grid_map[santa_dic[santa][0]][santa_dic[santa][1]] = santa
 
