@@ -10,13 +10,19 @@ r_c -=1
 grid_map = [[0]*n for _ in range(n)]
 grid_map[r_r][r_c] = -1
 
-santa_dic = {}
+first_santa_dic = {}
 for i in range(p):
     s_n, s_r, s_c = get_int_input()
     s_r -=1
     s_c -=1
     grid_map[s_r][s_c] = s_n
-    santa_dic[s_n] = [s_r, s_c, 1, -1, 0]
+    first_santa_dic[s_n] = [s_r, s_c, 1, -1, 0]
+
+santa_dic = {}
+for i in range(p):
+    for j in first_santa_dic:
+        if j == i+1:
+            santa_dic[j] = first_santa_dic[j]
 
 eight_direction = [[0,1], [0,-1], [1,0], [-1,0], [1,1], [1,-1], [-1,1], [-1,-1]]
 four_direction = [[-1,0], [0,1], [1,0], [0,-1]]
@@ -159,7 +165,7 @@ for turn in range(m):
                             near_direction_list = [direction]
                         elif temp_distance == nearest_distance:
                             near_direction_list.append(direction)
-            if initial_distance == nearest_distance or len(near_direction_list)==0:
+            if initial_distance <= nearest_distance or len(near_direction_list)==0:
                 nearest_direction = [0,0]
             else:
                 nearest_direction = near_direction_list[0]
