@@ -82,6 +82,16 @@ for sec in range(k):
 
     debugging = 9
 
+    check_escape = True
+
+    for man in man_dic:
+        _, _, escape = man_dic[man]
+        if escape==0:
+            check_escape = False
+
+    if check_escape == True:
+        break
+
 
     # 2. 미로가 회전
     # 2-1. 사람과 미로를 포함하는 가장 작은 정사각형 찾기
