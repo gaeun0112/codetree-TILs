@@ -39,6 +39,8 @@ for time in range(k):
 
     time +=1
 
+
+
     # 공격자 선정 
     low_power_list = []
     lowest_power = 10000000
@@ -263,6 +265,16 @@ for time in range(k):
             grid_map[rook_dic[rook][0]][rook_dic[rook][1]]+=1
 
     debugging = 0
+
+    alive_rook = 0
+    for i in grid_map:
+        for j in i:
+            if j>0:
+                alive_rook+=1
+    
+    if alive_rook==1:
+        break
+
 
 
 debugging = 0
