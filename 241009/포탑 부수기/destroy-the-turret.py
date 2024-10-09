@@ -26,10 +26,10 @@ debugging = 0
 def get_inverse(r,c):
     if r < 0:
         r = n-1
-    elif c < 0:
-        c = m-1
     elif r >= n:
         r = 0
+    if c < 0:
+        c = m-1
     elif c >= m:
         c = 0
     return r,c
@@ -110,7 +110,7 @@ for time in range(k):
                 old_list = [rook]
             elif temp == old_rook:
                 old_list.append(rook)
-        if len(old_list):
+        if len(old_list)==1:
             strongest = old_list[0]
         else:
             min_sum_list = []
@@ -156,6 +156,8 @@ for time in range(k):
 
     while q:
         cur_r, cur_c, cur_len, cur_route = q.popleft()
+        if [cur_r, cur_c]==[end_r, end_c]:
+            break
         for d in direction_list:
             next_r, next_c = cur_r+d[0], cur_c+d[1]
 
