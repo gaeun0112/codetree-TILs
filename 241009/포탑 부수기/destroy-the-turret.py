@@ -107,7 +107,7 @@ for time in range(k):
                 old_rook = temp
                 old_list = [rook]
             elif temp == old_rook:
-                old_list.appned(rook)
+                old_list.append(rook)
         if len(old_list):
             strongest = old_list[0]
         else:
