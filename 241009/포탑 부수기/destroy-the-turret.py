@@ -43,11 +43,12 @@ for time in range(k):
     low_power_list = []
     lowest_power = 10000000
     for rook in rook_dic:
-        if rook_dic[rook][2]<lowest_power:
-            lowest_power = rook_dic[rook][2]
-            low_power_list = [rook]
-        elif rook_dic[rook][2] == lowest_power:
-            low_power_list.append(rook)
+        if rook_dic[rook][2]>0:
+            if rook_dic[rook][2]<lowest_power:
+                lowest_power = rook_dic[rook][2]
+                low_power_list = [rook]
+            elif rook_dic[rook][2] == lowest_power:
+                low_power_list.append(rook)
     if len(low_power_list) == 1 :
         attacker = low_power_list[0]
     else:
@@ -152,21 +153,25 @@ for time in range(k):
     min_route_list = []
 
     while q:
-        cur_r, cur_c, cur_len, cur_route = q.pop()
-        if cur_r==end_r and cur_c==end_c:
-            if cur_len < min_distance:
-                min_distance = cur_len
-                min_route_list = [cur_route]
-                debugging = 0
-            elif cur_len == min_distance:
-                min_route_list.append(cur_route)
-                debugging = 0
-            break
+        cur_r, cur_c, cur_len, cur_route = q.popleft()
         for d in direction_list:
             next_r, next_c = cur_r+d[0], cur_c+d[1]
 
             # next_r, next_c 보정
             next_r, next_c = get_inverse(next_r, next_c)
+
+            if next_r==end_r and next_c==end_c:
+                if cur_len < min_distance:
+                    min_distance = cur_len
+                    output_route = cur_route[:]
+                    output_route.append(d)
+                    min_route_list = [output_route]
+                    debugging = 0
+                elif cur_len == min_distance:
+                    output_route = cur_route[:]
+                    output_route.append(d)
+                    min_route_list.append(output_route)
+                    debugging = 0
 
             if grid_map[next_r][next_c]!=0:
                 if visited[next_r][next_c]==False:
@@ -190,12 +195,13 @@ for time in range(k):
         route_len = len(min_route_list[0])
         route_num = len(min_route_list)
         route_idx_list = [i for i in range(route_num)]
-        for direction in route_len:
+        for direction in range(route_len):
             best_way = 10
             best_way_list = []
             for num in range(route_num):
                 if num in route_idx_list:
                     temp = direction_list.index(min_route_list[num][direction])
+                    debugging = 0
                     if temp < best_way:
                         best_way = temp
                         best_way_list.append(num)
@@ -203,22 +209,23 @@ for time in range(k):
                         best_way_list.append(num)
             route_idx_list = best_way_list[:]
             if len(best_way_list)==1:
-                best_route = min_route_list[num]
+                best_route = min_route_list[best_way_list[0]]
                 break
         # 레이저 공격 처리
         influenced_list = []
         cur_r, cur_c = start_r, start_c
         for d in best_route:
             next_r, next_c = cur_r+d[0], cur_c+d[1]
-            if next_r!=end_r and next_c!=end_c:
+            if [next_r, next_c]!=[end_r, end_c]:
                 influenced_list.append([next_r, next_c])
                 cur_r, cur_c = next_r, next_c
     elif len(min_route_list)==0:
         influenced_list = []
         # 포탄 공격
         for d in eight_direction_list:
-            next_r, next_c = start_r+d[0], start_c+d[1]
+            next_r, next_c = end_r+d[0], end_c+d[1]
             next_r, next_c = get_inverse(next_r, next_c)
+            debugging =  0
             if grid_map[next_r][next_c]!=0:
                 influenced_list.append([next_r, next_c])
 
@@ -252,6 +259,8 @@ for time in range(k):
         if rook not in turn_list:
             rook_dic[rook][2]+=1
             grid_map[rook_dic[rook][0]][rook_dic[rook][1]]+=1
+
+    debugging = 0
 
 
 debugging = 0
