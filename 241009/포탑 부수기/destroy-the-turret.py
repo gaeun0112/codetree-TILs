@@ -187,7 +187,8 @@ for time in range(k):
         cur_r, cur_c = start_r, start_c
         for d in best_route:
             next_r, next_c = cur_r+d[0], cur_c+d[1]
-            if next_r!=end_r and next_c!=end_c:
+            next_r, next_c = get_inverse(next_r, next_c)
+            if [next_r, next_c]!=[end_r, end_c]:
                 influenced_list.append([next_r, next_c])
                 cur_r, cur_c = next_r, next_c
     elif len(min_route_list)>1:
@@ -216,6 +217,7 @@ for time in range(k):
         cur_r, cur_c = start_r, start_c
         for d in best_route:
             next_r, next_c = cur_r+d[0], cur_c+d[1]
+            next_r, next_c = get_inverse(next_r, next_c)
             if [next_r, next_c]!=[end_r, end_c]:
                 influenced_list.append([next_r, next_c])
                 cur_r, cur_c = next_r, next_c
@@ -226,7 +228,7 @@ for time in range(k):
             next_r, next_c = end_r+d[0], end_c+d[1]
             next_r, next_c = get_inverse(next_r, next_c)
             debugging =  0
-            if grid_map[next_r][next_c]!=0:
+            if grid_map[next_r][next_c]!=0 and [next_r, next_c]!=[start_r, start_c]:
                 influenced_list.append([next_r, next_c])
 
     # 공격받은 포탑 처리
@@ -256,7 +258,7 @@ for time in range(k):
 
     # 공격과 무관했던 포탑들 처리
     for rook in rook_dic:
-        if rook not in turn_list:
+        if rook not in turn_list and rook_dic[rook][2]>0:
             rook_dic[rook][2]+=1
             grid_map[rook_dic[rook][0]][rook_dic[rook][1]]+=1
 
