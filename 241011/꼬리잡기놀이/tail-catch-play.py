@@ -133,15 +133,18 @@ def main():
                         man_list[t_idx][-1][0] = 1
                         grid_map[man_list[t_idx][0][1][0]][man_list[t_idx][0][1][1]] = 3
                         grid_map[man_list[t_idx][-1][1][0]][man_list[t_idx][-1][1][1]] = 1
-                        before_head = man_list[t_idx][0]
-                        before_tail = man_list[t_idx][-1]
-                        man_list[t_idx][0] = before_tail
-                        man_list[t_idx][-1] = before_head
+                        # before_head = man_list[t_idx][0]
+                        # before_tail = man_list[t_idx][-1]
+                        new_team = []
+                        for t in reversed(team):
+                            new_team.append(t)
+                        man_list[t_idx]=new_team
                         break
 
 
     debugging = 0
 
     print(sum(team_score))
+
 
 main()
