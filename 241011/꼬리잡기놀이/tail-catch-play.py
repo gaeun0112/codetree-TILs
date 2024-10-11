@@ -73,7 +73,9 @@ def main():
         # 2. 각 라운드마다 공이 정해진 선을 따라 던져짐.
         def get_ball():
 
-            temp = (turn//10)%4
+            temp = (turn//n)%4
+            if turn%n==0:
+                temp = ((turn//n) - 1)%4
 
             if temp==0 or temp==1:
                 if temp==0:
@@ -96,7 +98,7 @@ def main():
                 if t_num==0:
                     x = 0
                 else:
-                    x = t_num-1
+                    x = n - t_num
             return x, row_col, min_max
         
         x, row_col, min_max = get_ball()
@@ -114,12 +116,12 @@ def main():
                     get_score_man = [x, idx]
                     break
         elif row_col == "col" and min_max=="min":
-            for idx in range(0, n):
+            for idx in range(n-1, -1, -1):
                 if 1<=grid_map[idx][x]<=3:
                     get_score_man = [idx, x]
                     break
         elif row_col == "col" and min_max=="max":
-            for idx in range(n-1, -1, -1):
+            for idx in range(0, n):
                 if 1<=grid_map[idx][x]<=3:
                     get_score_man = [idx, x]
                     break
