@@ -58,14 +58,17 @@ def main():
                     for d in direction_list:
                         next_r, next_c = cur_r+d[0], cur_c+d[1]
                         if 0<=next_r<n and 0<=next_c<n:
-                            if grid_map[next_r][next_c]==4:
+                            if grid_map[next_r][next_c]!=0:
                                 break
-                grid_map[next_r][next_c] = man[0]
                 man_list[t_idx][m_idx][1] = [next_r, next_c]
-                if man[0]==3:
-                    grid_map[cur_r][cur_c] = 4
-
                 next_r, next_c = cur_r, cur_c
+                grid_map[cur_r][cur_c] = 4
+
+
+        for team in man_list:
+            for man in team:
+                r, c = man[1][0], man[1][1]
+                grid_map[r][c] = man[0]
 
         debugging = 0
 
