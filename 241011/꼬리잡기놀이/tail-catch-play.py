@@ -58,7 +58,7 @@ def main():
                     for d in direction_list:
                         next_r, next_c = cur_r+d[0], cur_c+d[1]
                         if 0<=next_r<n and 0<=next_c<n:
-                            if grid_map[next_r][next_c]!=0:
+                            if grid_map[next_r][next_c]==4 or grid_map[next_r][next_c]==3:
                                 break
                 man_list[t_idx][m_idx][1] = [next_r, next_c]
                 next_r, next_c = cur_r, cur_c
